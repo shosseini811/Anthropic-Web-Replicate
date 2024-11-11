@@ -147,12 +147,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - React Native and Expo teams
 - Flask development team
 
-## Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-Project Link: [https://github.com/yourusername/anthropic-web-replicate](https://github.com/yourusername/anthropic-web-replicate)
-```
-
 This README provides:
 1. Clear project description
 2. Setup instructions
@@ -162,12 +156,4 @@ This README provides:
 6. License information
 7. Contact details
 
-Remember to:
-- Replace `yourusername` with your actual GitHub username
-- Add your contact information
-- Update the license section according to your chosen license
-- Add any specific configuration details for your deployment
-- Include screenshots if desired
-
-You can further customize this README based on your specific needs or additional features you implement.
 
