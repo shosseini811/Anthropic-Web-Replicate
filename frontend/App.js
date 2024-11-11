@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Button, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { View, TextInput, Button, Text, FlatList, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 
 const App = () => {
   const [messages, setMessages] = useState([]);
   const [textInput, setTextInput] = useState('');
   const flatListRef = useRef(null);
 
-  // Auto scroll to bottom when new messages arrive
   useEffect(() => {
     if (flatListRef.current && messages.length > 0) {
       flatListRef.current.scrollToEnd({ animated: true });
@@ -30,7 +29,7 @@ const App = () => {
         },
         body: JSON.stringify({ 
           message: textInput, 
-          history: newMessages  // Changed from messages to newMessages to include the current message
+          history: newMessages
         }),
       });
 
@@ -54,7 +53,7 @@ const App = () => {
     }
   };
 
-  const renderMessage = ({ item, index }) => {
+  const renderMessage = ({ item }) => {
     const isUser = item.user === 'user';
     const isError = item.user === 'error';
 
@@ -82,27 +81,44 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.messagesList}
-        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput 
-          style={styles.input} 
-          value={textInput} 
-          onChangeText={setTextInput} 
-          placeholder="Type your message..."
-          multiline
-        />
-        <Button title="Send" onPress={sendMessage} />
-      </View>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+      >
+        <View style={styles.messagesList}>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.messagesContainer}
+            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
+            showsVerticalScrollIndicator={true}
+            scrollEnabled={true}
+            bounces={Platform.OS === 'ios'}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput 
+            style={styles.input} 
+            value={textInput} 
+            onChangeText={setTextInput} 
+            placeholder="Type your message..."
+            multiline
+            maxHeight={100}
+          />
+          <Button 
+            title="Send" 
+            onPress={sendMessage}
+            disabled={!textInput.trim()}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -111,7 +127,11 @@ const styles = StyleSheet.create({
   },
   messagesList: {
     flex: 1,
-    padding: 10,
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+  },
+  messagesContainer: {
+    paddingVertical: 10,
   },
   messageContainer: {
     marginVertical: 5,
@@ -159,6 +179,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     backgroundColor: '#fff',
+    alignItems: 'flex-end',
   },
   input: {
     flex: 1,
@@ -168,6 +189,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     maxHeight: 100,
+    minHeight: 40,
   },
 });
 

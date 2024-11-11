@@ -47,7 +47,7 @@ def chat():
 
         # Create the message using the Messages API with increased max_tokens
         response = client.messages.create(
-            model="claude-2.1",
+            model="claude-3-5-sonnet-20240620",
             messages=messages,
             max_tokens=4096,  # Increased token limit for longer responses
             temperature=0.7
