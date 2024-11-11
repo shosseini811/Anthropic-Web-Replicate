@@ -1,0 +1,10 @@
+fastapi 
+uvicorn 
+python-dotenv
+pydantic 
+requests
+anthropic
+python-multipart
+python-json-logger
+flask
+flask-cors
